@@ -14,14 +14,14 @@ Use Natural Language Processing (NLP) to explore how millennial women spend thei
 - Streamlit
 
 ## **Data:**
-476 money diaries were scraped from the Refinery29 website. Diaries were from January 18, 2019-June 3, 2020.
+476 money diaries were scraped from the Refinery29 website from January 18, 2019-June 3, 2020.
 1. Diarist age, salary and location were cleaned and used as metadata.
 2. Diarist 7 day entries were used as text data. All numbers, characters, and stop words were removed.
 
 ## **Results Summary:**
 *Top topics (all diarists)*: Friends/socializing, Cooking/food, Work, Dogs, Self-care, Family, Husband, Baby
 
-*Top topics by cluster*:
+*Top topics by cluster*:  
 Cluster 1: Early 20s, entry-level earners
 - Self-care, Purchases, Dogs/pets, Food, Fitness, Travel, Work, Family
 
