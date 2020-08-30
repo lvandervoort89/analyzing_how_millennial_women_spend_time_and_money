@@ -15,7 +15,7 @@ import numpy as np
 from sklearn.metrics import pairwise_distances
 
 
-st.title('R29 Money Diary Recommender')
+st.title('Refinery29 Money Diary Recommender')
 st.subheader(
     'Input some information about yourself and I\'ll recommend a'
     ' few money diaries of people similar to you!'
@@ -23,11 +23,18 @@ st.subheader(
 
 st.text('')
 
+st.markdown(
+    'This recommender was created using Natural Language Processing (NLP),'
+    ' Non-Negative Matrix Factorization (NMF), K-means clustering, and cosine'
+    ' similarity.'
+)
+
+st.text('')
 
 age = st.number_input('Age', min_value=20, max_value=100, value=25)
 salary = st.number_input('Salary', min_value=20000, max_value=600000, value=50000)
 
-user_diary = [st.text_area('Write a short paragraph about what you did yesterday.')]
+user_diary = [st.text_area('Write a mini diary (paragraph) about what you did yesterday.')]
 
 # predict cluster
 scaler = load('scaler.pkl')
@@ -159,4 +166,11 @@ if new_observation_cluster == 4:
     if st.button('Recommendation #3'):
         components.iframe(diary_4_url_rec3, height=600, scrolling=True)
 
-st.text('Created by Lisa VanderVoort')
+st.text('')
+st.text('')
+st.markdown(
+    'My name is Lisa VanderVoort, I love reading Refinery29 Money Diaries, and'
+    ' working on data science projects. You can read more about my projects'
+    ' [here](https://lvandervoort89.github.io) and find my project code'
+    ' [here.](https://github.com/lvandervoort89/analyzing_how_millennial_women_spend_time_and_money)'
+)
