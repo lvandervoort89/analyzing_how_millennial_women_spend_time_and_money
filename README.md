@@ -38,4 +38,4 @@ Cluster 5: Mid 30s, high earners
 - Family routines, Work, Parenting, Self-care, Family
 
 ## **Recommender:**
-You can find the Refinery29 Money Diary recommender I created [here.](https://polar-scrubland-83619.herokuapp.com) 
+You can find the Refinery29 Money Diary recommender I created [here](https://polar-scrubland-83619.herokuapp.com) using [Heroku.](www.heroku.com)
