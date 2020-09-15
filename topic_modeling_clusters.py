@@ -162,9 +162,46 @@ def topic_modeling(data_nouns):
 
     # create NMF object and transform the document term object created above
     nmf = NMF(5, random_state=19)
-    doc_topic = nmf.fit_transform(data_dtmn)
 
     # View top words in each topic
     display_topics(nmf, cvn.get_feature_names(), 10)
 
-    return cvn, doc_topic, nmf
+def main():
+    '''
+    Loads in the cleaned diary text dataframe, calls NMF noun topic modeling, and
+    returns top topics, a document term matrix and a term document matrix.
+    '''
+
+    # Load in csv files
+    text_df = pd.read_csv('text_df.csv')
+    clustered_data_scaled = pd.read_csv('clustered_data_scaled.csv')
+
+    # Merge datasets together
+    updated_text_df = pd.merge(clustered_data_scaled, text_df, left_on='story_title',
+                               right_on='story_title')
+
+    # Create dataframes for each cluster
+    cluster_0, cluster_1, cluster_2, cluster_3, cluster_4 = create_dataframes_for_clusters(
+        updated_text_df)
+
+    # Cluster 0 topic modeling
+    data_nouns_cluster_0 = create_noun_dataframe(cluster_0)
+    topic_modeling(data_nouns_cluster_0)
+
+    # Cluster 1 topic modeling
+    data_nouns_cluster_1 = create_noun_dataframe(cluster_1)
+    topic_modeling(data_nouns_cluster_1)
+
+    # Cluster 2 topic modeling
+    data_nouns_cluster_2 = create_noun_dataframe(cluster_2)
+    topic_modeling(data_nouns_cluster_2)
+
+    # Cluster 3 topic modeling
+    data_nouns_cluster_3 = create_noun_dataframe(cluster_3)
+    topic_modeling(data_nouns_cluster_3)
+
+    # Cluster 4 topic modeling
+    data_nouns_cluster_4 = create_noun_dataframe(cluster_4)
+    topic_modeling(data_nouns_cluster_4)
+
+main()

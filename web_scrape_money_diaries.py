@@ -17,8 +17,24 @@ import pandas as pd
 
 from selenium import webdriver
 
-# get unique links for diaries
-def get_diary_links(website='https://www.refinery29.com/en-us/money-diary'):
+def save_to_csv(data, file_name):
+    '''
+    A helper function that saves a dataframe to csv.
+
+    Parameters
+    ----------
+    data : A pandas dataframe
+    file_name : Name for storing the csv file
+
+    Returns
+    -------
+    A csv named file_name
+    '''
+
+    data.to_csv(f'{file_name}.csv', index=False)
+
+# Get unique links for diaries
+def get_diary_links():
     '''
     Get unique links for diaries using Selenium and Chromedriver. When
     chromedriver window opens, continue scrolling down to find
@@ -49,7 +65,7 @@ def get_diary_links(website='https://www.refinery29.com/en-us/money-diary'):
 
     return links_to_follow
 
-# create a helper function to get information about each diarist
+# Create a helper function to get information about each diarist
 def get_diarist_value(soup, field_name):
     '''
     Grab a value from Money Diary. Takes a string attribute of a money diary
@@ -74,7 +90,7 @@ def get_diarist_value(soup, field_name):
     except TypeError:
         return blank
 
-# create a dictionary to hold the scraped data
+# Create a dictionary to hold the scraped data
 def get_money_diaries_dict(id_link):
     '''
     Creates a dictionary of the categories of scraped data from each of the
@@ -89,13 +105,13 @@ def get_money_diaries_dict(id_link):
     A dictionary of scraped data for each of the money diaries.
     '''
 
-    #Develop base URL
+    # Develop base URL
     base_url = 'https://www.refinery29.com'
 
-    #Create full URL to scrape
+    # Create full URL to scrape
     url = base_url + id_link
 
-    #Request HTML and parse
+    # Request HTML and parse
     response = requests.get(url)
     page = response.text
     soup = BeautifulSoup(page, 'lxml')
@@ -103,22 +119,22 @@ def get_money_diaries_dict(id_link):
     headers = ['story_title', 'occupation', 'age', 'location', 'salary',
                'diary_text']
 
-    # story title
+    # Story title
     story_title = id_link
 
-    # cccupation
+    # Occupation
     occupation = get_diarist_value(soup, 'Occupation:')
 
-    # age
+    # Age
     age = get_diarist_value(soup, 'Age:')
 
-    # location
+    # Location
     location = get_diarist_value(soup, 'Location:')
 
-    # salary
+    # Salary
     salary = get_diarist_value(soup, 'Salary:')
 
-    # diary text
+    # Diary text
     diary_text = []
     for div in soup.find_all('div', class_='section-text'):
         diary_text.append(div.text)
@@ -128,6 +144,7 @@ def get_money_diaries_dict(id_link):
 
     return data_dict
 
+# Scrape the data
 def scrape_r29_money_diaries(links_to_follow):
     '''
     Returns 2 dataframes with information scraped from Refinery29: a
@@ -150,8 +167,23 @@ def scrape_r29_money_diaries(links_to_follow):
 
     money_df = pd.DataFrame(money_diary_list)
 
-    # split the money df into 2 separate df to make processing text easier
+    # Split the money df into 2 separate df to make processing text easier
     text_df = money_df[['story_title', 'diary_text']]
     diarist_df = money_df.drop('diary_text', axis=1)
 
-    return text_df, diarist_df
+    # Save dataframes to csv files
+    save_to_csv(text_df, 'text_df')
+    save_to_csv(diarist_df, 'diarist_df')
+
+def main():
+    '''
+    Calls internal functions to the script to scrape data from Refinery29 website
+    and then creates a text dataframe that contains the diary information and a diarist
+    dataframe that contains diarist metadata.
+    '''
+
+    # Call internal functions to this script
+    links_to_follow = get_diary_links()
+    scrape_r29_money_diaries(links_to_follow)
+
+main()

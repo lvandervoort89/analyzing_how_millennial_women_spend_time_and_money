@@ -7,7 +7,7 @@ import string
 
 import pandas as pd
 
-# helper function to remove blanks rows
+# Helper function to remove blanks rows
 def remove_blank_rows(diarist_df):
     '''
     A function that removes blanks rows in the dataframe.
@@ -26,7 +26,7 @@ def remove_blank_rows(diarist_df):
 
     return diarist_df
 
-# create function to clean salaries by removing common characters in salaries
+# Create function to clean salaries by removing common characters in salaries
 def clean_salaries_round_1(text):
     '''
     Removes $ , from text.
@@ -589,7 +589,7 @@ def clean_text_round_1(text_df, diarist_df):
 
     return updated_text_df
 
-def clean_text_round2(text):
+def clean_text_round_2(text):
     '''
     Make text lowercase, remove text in square brackets, remove punctuation,
     remove words containing numbers, remove additional punctuation and other
@@ -613,3 +613,40 @@ def clean_text_round2(text):
     text = re.sub('^', '', text)
 
     return text
+
+def main():
+    '''
+    Calls internal functions to the script to clean the text data and diarist
+    metadata.
+    '''
+
+    # Load in csv files
+    text_df = pd.read_csv('text_df.csv')
+    diarist_df = pd.read_csv('diarist_df.csv')
+
+    # Text and dataframe cleaning
+    diarist_df = remove_blank_rows(diarist_df)
+
+    diarist_df.salary = diarist_df.salary.apply(clean_salaries_round_1)
+    diarist_df = clean_salaries_round_2(diarist_df)
+    diarist_df = clean_salaries_round_3(diarist_df)
+    diarist_df = clean_salaries_round_4(diarist_df)
+    diarist_df = clean_salaries_round_5(diarist_df)
+    diarist_df = clean_salaries_round_6(diarist_df)
+    diarist_df = clean_salaries_round_7(diarist_df)
+
+    diarist_df = clean_locations_round_1(diarist_df)
+    diarist_df = clean_locations_round_2(diarist_df)
+    diarist_df = clean_locations_round_3(diarist_df)
+
+    diarist_df['high_cost_of_living_area'] = diarist_df.apply(
+        lambda x: in_major_city(x['location']), axis=1)
+
+    diarist_df = convert_age_to_int(diarist_df)
+
+    data_clean = clean_text_round_1(text_df, diarist_df)
+    data_clean.diary_text_string = data_clean.diary_text_string.apply(clean_text_round_2)
+
+    data_clean.to_csv('data_clean.csv')
+
+main()

@@ -7,6 +7,22 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 
+def save_to_csv(data, file_name):
+    '''
+    A helper function that saves a dataframe to csv.
+
+    Parameters
+    ----------
+    data : A pandas dataframe
+    file_name : Name for storing the csv file
+
+    Returns
+    -------
+    A csv named file_name
+    '''
+
+    data.to_csv(f'{file_name}.csv', index=False)
+
 def cluster_metadata(diarist_df_numerical):
     '''
     A function that takes a numerical dataframe containing age and salary and
@@ -33,7 +49,7 @@ def cluster_metadata(diarist_df_numerical):
     kfit = kmeans.fit(diarist_df_scaled)
     identified_clusters_scaled = kfit.predict(diarist_df_scaled)
 
-    return kfit, diarist_df_scaled, identified_clusters_scaled
+    return identified_clusters_scaled
 
 def append_clusters_to_df(diarist_df, scaled_clusters):
     '''
@@ -53,3 +69,19 @@ def append_clusters_to_df(diarist_df, scaled_clusters):
     clustered_data_scaled['Cluster'] = scaled_clusters
 
     return clustered_data_scaled
+
+def main():
+    '''
+    Loads in the cleaned diary diarist dataframe, performs K-Means clustering on the data
+    and then appends the clusters to the original dataframe.
+    '''
+
+    # Load in csv files
+    diarist_df = pd.read_csv('diarist_df.csv')
+
+    # Clustering
+    identified_clusters_scaled = cluster_metadata(diarist_df)
+    clustered_data_scaled = append_clusters_to_df(diarist_df, identified_clusters_scaled)
+    save_to_csv(clustered_data_scaled, 'clustered_data_scaled')
+
+main()
