@@ -11,22 +11,6 @@ from sklearn.decomposition import NMF
 from nltk import word_tokenize
 from nltk import pos_tag
 
-def save_to_csv(data, file_name):
-    '''
-    A helper function that saves a dataframe to csv.
-
-    Parameters
-    ----------
-    data : A pandas dataframe
-    file_name : Name for storing the csv file
-
-    Returns
-    -------
-    A csv named file_name
-    '''
-
-    data.to_csv(f'{file_name}.csv', index=False)
-
 def display_topics(model, feature_names, no_top_words, topic_names=None):
     '''
     Given a model, return the top words for each topic.
@@ -182,7 +166,7 @@ def main():
     term_doc_matrix = term_document_matrix(doc_topic)
 
     # Save dataframes to csv files
-    save_to_csv(data_dtmn, 'data_dtmn')
-    save_to_csv(term_doc_matrix, 'term_doc_matrix')
+    data_dtmn.to_csv(r'data_dtmn.csv', index=False)
+    term_doc_matrix.to_csv(r'term_doc_matrix.csv', index=False)
 
 main()

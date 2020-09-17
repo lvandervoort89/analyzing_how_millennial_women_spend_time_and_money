@@ -17,22 +17,6 @@ import pandas as pd
 
 from selenium import webdriver
 
-def save_to_csv(data, file_name):
-    '''
-    A helper function that saves a dataframe to csv.
-
-    Parameters
-    ----------
-    data : A pandas dataframe
-    file_name : Name for storing the csv file
-
-    Returns
-    -------
-    A csv named file_name
-    '''
-
-    data.to_csv(f'{file_name}.csv', index=False)
-
 # Get unique links for diaries
 def get_diary_links():
     '''
@@ -172,8 +156,8 @@ def scrape_r29_money_diaries(links_to_follow):
     diarist_df = money_df.drop('diary_text', axis=1)
 
     # Save dataframes to csv files
-    save_to_csv(text_df, 'text_df')
-    save_to_csv(diarist_df, 'diarist_df')
+    text_df.to_csv(r'text_df.csv', index=False)
+    diarist_df.to_csv(r'diarist_df.csv', index=False)
 
 def main():
     '''

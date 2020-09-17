@@ -7,22 +7,6 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 
-def save_to_csv(data, file_name):
-    '''
-    A helper function that saves a dataframe to csv.
-
-    Parameters
-    ----------
-    data : A pandas dataframe
-    file_name : Name for storing the csv file
-
-    Returns
-    -------
-    A csv named file_name
-    '''
-
-    data.to_csv(f'{file_name}.csv', index=False)
-
 def cluster_metadata(diarist_df_numerical):
     '''
     A function that takes a numerical dataframe containing age and salary and
@@ -82,6 +66,8 @@ def main():
     # Clustering
     identified_clusters_scaled = cluster_metadata(diarist_df)
     clustered_data_scaled = append_clusters_to_df(diarist_df, identified_clusters_scaled)
-    save_to_csv(clustered_data_scaled, 'clustered_data_scaled')
+
+    # Save to csv
+    clustered_data_scaled.to_csv(r'clustered_data_scaled.csv', index=False)
 
 main()
